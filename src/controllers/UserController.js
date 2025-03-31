@@ -4,20 +4,18 @@ import jwt from "jsonwebtoken";
 //! Registration.........................
 export const registration = async (req, res) => {
   try {
-    const reqBody = req.body;
-    const data = await UserModule.create(reqBody);
-    if (data) {
-      return res.status(200).json({ status: "success", data: data });
-    } else {
-      return res
-        .status(400)
-        .json({ status: "fail", error: "User already exists" });
-    }
-  } catch (e) {
-    console.log(e);
-    return res.status(400).json({ status: "fail", error: e.toString() });
+    let reqBody = req.body;
+    const data = await UserModule.create(reqBody); 
+    return res.status(201).json({
+      status: "success",
+      message: "User created successfully.",
+      data: data,
+    });
+  } catch (err) {
+    return res.status(400).json({ status: "fail", error: err.toString() });
   }
 };
+
 
 //! Login.................................
 export const login = async (req, res) => {
