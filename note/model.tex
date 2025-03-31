@@ -1,0 +1,45 @@
+1. Task Data : 
+   title, description, status, email, createdDate
+
+2. User Data : 
+   Email, Firstname, Lastname, mobile, password, Image, createData
+
+3. Forget password : 
+   
+
+<< Epi-4 >>>>>>>>>>>>> model create >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+   ## UserModel...........................................................
+   import mongoose, { version } from "mongoose";
+   const DataSchema = mongoose.Schema(
+     {
+       email: { type: String, unique: true },
+       firstName: { type: String },
+       lastName: { type: String },
+       mobile: { type: String },
+       password: { type: String },
+       photo: { type: String },
+       createDate: { type: Date, default: new Date() },
+     },
+     { timestamps: true },
+     { versionKey: false }
+   );
+   const UserModel = mongoose.model("users", DataSchema);
+   export default UserModel;
+
+   ## TasksModel .............................................................................
+   import mongoose from "mongoose";
+   const DataSchema = mongoose.Schema(
+     {
+       title: { type: String },
+       description: { type: String },
+       status: { type: String },
+       email: { type: String },
+       createDate: { type: Date, default: Date.now() },
+     },
+     { timestamps: true },
+     { versionKey: false }
+   );
+   const TasksModel = mongoose.model("tasks", DataSchema);
+   export default TasksModel;
+
+   << 5 >>>>>>>> img to base64 => convert to base64 <>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
