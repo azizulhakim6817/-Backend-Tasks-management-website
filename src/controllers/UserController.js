@@ -12,7 +12,7 @@ export const registration = async (req, res) => {
       data: data,
     });
   } catch (err) {
-    return res.status(400).json({ status: "fail", error: err.toString() });
+    return res.status(200).json({ status: "fail", error: err.toString() });
   }
 };
 
