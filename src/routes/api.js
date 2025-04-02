@@ -22,7 +22,7 @@ router.get(
   AuthoVerifyMiddleware,
   TasksController.updateTask
 );
-router.delete(
+router.get(
   "/deleteTask/:id/",
   AuthoVerifyMiddleware,
   TasksController.deleteTask
