@@ -9,7 +9,7 @@ const router = express.Router();
 router.post("/registration", UserController.registration);
 router.post("/login", UserController.login);
 router.post(
-  "/profileUpdate/:ID",
+  "/profileUpdate",
   AuthoVerifyMiddleware,
   UserController.profileUpdate
 );

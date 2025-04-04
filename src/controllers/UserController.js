@@ -18,7 +18,6 @@ export const registration = async (req, res) => {
   }
 };
 
-
 //! Login.................................
 export const login = async (req, res) => {
   try {
@@ -46,11 +45,10 @@ export const login = async (req, res) => {
 export const profileUpdate = async (req, res) => {
   try {
     const email = req.headers["email"];
-    const ID = new mongoose.Types.ObjectId(req.params["ID"]);
     const reqBody = req.body;
 
     const data = await UserModule.updateOne(
-      { email: email, _id: ID },
+      { email: email },
       { $set: reqBody }
     );
     if (data.matchedCount > 0) {
@@ -67,7 +65,6 @@ export const profileUpdate = async (req, res) => {
 export const profileDetails = async (req, res) => {
   try {
     let email = req.headers.email;
-
     const data = await UserModule.findOne({ email: email });
     return res.status(200).json({ status: "success", data: data });
   } catch (error) {
