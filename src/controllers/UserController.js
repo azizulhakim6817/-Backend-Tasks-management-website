@@ -2,6 +2,8 @@ import mongoose from "mongoose";
 
 import UserModule from "../module/UserModule.js";
 import jwt from "jsonwebtoken";
+import OTPModel from "./../module/OTPModel.js";
+import sendEmail from "../../utility/SendEmailUtility.js";
 
 //! Registration.........................
 export const registration = async (req, res) => {
@@ -69,5 +71,80 @@ export const profileDetails = async (req, res) => {
     return res.status(200).json({ status: "success", data: data });
   } catch (error) {
     return res.status(400).json({ status: "fail", error: error.toString() });
+  }
+};
+
+//! Recover Verify Email ....................................
+export const RecoverVerifyEmail = async (req, res) => {
+  let email = req.params.email;
+  let OTPCode = Math.floor(100000 + Math.random() * 900000);
+
+  try {
+    let userExists = await UserModule.findOne({ email });
+    if (!userExists) {
+      return res.status(400).json({ status: "fail", data: "User not found" });
+    }
+
+    await OTPModel.create({ email: email, otp: OTPCode });
+
+    await sendEmail(email, "Your OTP Code", `${OTPCode}`);
+
+    return res.status(200).json({
+      status: "success",
+      data: " ✅ Yorr Email verify OTP code is sent Requestd! ",
+    });
+  } catch (error) {
+    return res.status(500).json({ status: "fail", error: error.toString() });
+  }
+};
+
+// Recover Verify OTP .........................
+export const RecoverVerifyOTP = async (req, res) => {
+  let email = req.params.email;
+  let OTPCode = req.params.otp;
+  let status = 0;
+  let statusUpdate = 1;
+
+  let OTPCount = await OTPModel.aggregate([
+    { $match: { email: email, otp: OTPCode, status: status } },
+    { $count: "total" },
+  ]);
+  if (OTPCount.length > 0) {
+    let OTPUpdate = await OTPModel.updateOne(
+      { email: email, otp: OTPCode, status: status },
+      { email: email, otp: OTPCode, status: statusUpdate }
+    );
+    return res.status(200).json({ status: "success", data: OTPUpdate });
+  } else {
+    return res
+      .status(400)
+      .json({ status: "success", data: "OTP code is already used!" });
+  }
+};
+
+// Recover Change Password .........................
+export const RecoverResetPassword = async (req, res) => {
+  const { email, OTP, password } = req.body;
+  const statusUpdate = 1;
+
+  try {
+    const OTPCount = await OTPModel.aggregate([
+      { $match: { email: email, otp: OTP, status: statusUpdate } },
+      { $count: "total" },
+    ]);
+
+    if (OTPCount.length > 0) {
+      const userUpdate = await UserModule.updateOne(
+        { email: email },
+        { password: password }
+      );
+      return res.status(200).json({ status: "success", data: userUpdate });
+    } else {
+      return res
+        .status(400)
+        .json({ status: "fail", data: "OTP code is invalid or expired!" });
+    }
+  } catch (error) {
+    return res.status(500).json({ status: "fail", error: error.toString() });
   }
 };

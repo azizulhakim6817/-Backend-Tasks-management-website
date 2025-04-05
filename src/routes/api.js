@@ -19,6 +19,11 @@ router.get(
   UserController.profileDetails
 );
 
+// Email verify , ...............................
+router.get("/RecoverVerifyEmail/:email", UserController.RecoverVerifyEmail);
+router.get("/RecoverVerifyOTP/:email/:otp", UserController.RecoverVerifyOTP);
+router.post("/RecoverResetPassword", UserController.RecoverResetPassword);
+
 // Task create, update, delete, listTask, TaskCount .......................
 router.post("/createTask", AuthoVerifyMiddleware, TasksController.createTask);
 router.get("/readTasks", AuthoVerifyMiddleware, TasksController.readTasks);
