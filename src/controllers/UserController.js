@@ -105,20 +105,24 @@ export const RecoverVerifyOTP = async (req, res) => {
   let status = 0;
   let statusUpdate = 1;
 
-  let OTPCount = await OTPModel.aggregate([
-    { $match: { email: email, otp: OTPCode, status: status } },
-    { $count: "total" },
-  ]);
-  if (OTPCount.length > 0) {
-    let OTPUpdate = await OTPModel.updateOne(
-      { email: email, otp: OTPCode, status: status },
-      { email: email, otp: OTPCode, status: statusUpdate }
-    );
-    return res.status(200).json({ status: "success", data: OTPUpdate });
-  } else {
-    return res
-      .status(400)
-      .json({ status: "success", data: "OTP code is already used!" });
+  try {
+    let OTPCount = await OTPModel.aggregate([
+      { $match: { email: email, otp: OTPCode, status: status } },
+      { $count: "total" },
+    ]);
+    if (OTPCount.length > 0) {
+      let OTPUpdate = await OTPModel.updateOne(
+        { email: email, otp: OTPCode, status: status },
+        { email: email, otp: OTPCode, status: statusUpdate }
+      );
+      return res.status(200).json({ status: "success", data: OTPUpdate });
+    } else {
+      return res
+        .status(200)
+        .json({ status: "fail", data: "Invalid OTP code!" });
+    }
+  } catch (error) {
+    return res.status(500).json({ status: "fail", error: error.toString() });
   }
 };
 
