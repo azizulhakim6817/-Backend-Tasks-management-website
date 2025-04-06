@@ -126,7 +126,7 @@ export const RecoverVerifyOTP = async (req, res) => {
   }
 };
 
-// Recover Change Password .........................
+// Recover Reset Password .........................
 export const RecoverResetPassword = async (req, res) => {
   const { email, OTP, password } = req.body;
   const statusUpdate = 1;

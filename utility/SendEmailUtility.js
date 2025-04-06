@@ -4,17 +4,17 @@ const transporter = nodemailer.createTransport({
   service: "gmail",
   host: "smtp.gmail.com",
   port: 587,
-  secure: false,
+  secure: true,
   auth: {
-    user: "uttom00781@gmail.com",
-    pass: "ioxw nhoz lfsr vnri",
+    user: "azizulhakim68178@gmail.com",
+    pass: "zrgc zzbf iqov oplu",
   },
   tls: { rejectUnauthorized: false },
 });
 
 const sendEmail = async (EmailTo, EmailSubject, EmailText) => {
   const mailOption = {
-    from: `Task Management website <uttom00781@gmail.com>`,
+    from: `Task Management website <azizulhakim68178@gmail.com>`,
     to: EmailTo,
     subject: EmailSubject,
     html: `<p>Your OTP code is : <strong>${EmailText}</strong></p>`,
