@@ -6,15 +6,15 @@ const transporter = nodemailer.createTransport({
   port: 587,
   secure: true,
   auth: {
-    user: "azizulhakim68178@gmail.com",
-    pass: "dfhx vyal mxra fbjz",
+    user: "ah5219562@gmail.com",
+    pass: "ah5219562@gmail.com",
   },
   tls: { rejectUnauthorized: false },
 });
 
 const sendEmail = async (EmailTo, EmailSubject, EmailText) => {
   const mailOption = {
-    from: `Task Management website <azizulhakim68178@gmail.com>`,
+    from: `Task Management website <ah5219562@gmail.com>`,
     to: EmailTo,
     subject: EmailSubject,
     html: `<p>Your OTP code is : <strong>${EmailText}</strong></p>`,
